@@ -62,7 +62,5 @@ if st.sidebar.button('Detectar insectos'):
                  caption='Imagen detectada',
                  use_column_width=True
                  )
-        try:
-            
         except Exception as ex:
             st.write("Ninguna imagen fue cargada")
