@@ -20,7 +20,7 @@ with st.sidebar:
     st.header("Cargue su imagen")     # Adding header to sidebar
     # Adding file uploader to sidebar for selecting images
     source_img = st.file_uploader(
-        "Seleccione una imagen...", type=("jpg", "jpeg", "png", 'bmp', 'webp'))
+        "Imagen", type=("jpg", "jpeg", "png", 'bmp', 'webp'))
 
     # Model Options
     confidence = 0.15
