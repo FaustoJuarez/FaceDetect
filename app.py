@@ -63,8 +63,6 @@ if st.sidebar.button('Detectar insectos'):
                  use_column_width=True
                  )
         try:
-            with st.expander("Resultados de deteccion"):
-                for box in boxes:
-                    st.write(box.xywh)
+            
         except Exception as ex:
             st.write("Ninguna imagen fue cargada")
