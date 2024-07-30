@@ -11,7 +11,7 @@ model_path = 'weights/best.pt'
 
 # Setting page layout
 st.set_page_config(
-    page_title="Deteccion de Insectos",
+    page_title="Deteccion de Rostro",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -24,7 +24,7 @@ with st.sidebar:
     confidence = 0.15
 
 # Creating main page heading
-st.title("Deteccion de Insectos con YOLOv8")
+st.title("Deteccion de Rostro con YOLOv8")
 
 # Creating two columns on the main page
 col1, col2 = st.columns(2)
@@ -52,7 +52,7 @@ if source_img:
             st.error(ex)
             logging.error(f"Error opening image: {ex}")
     
-    if st.sidebar.button('Detectar insectos'):
+    if st.sidebar.button('Detectar Rostro'):
         try:
             # Perform prediction
             res = model(uploaded_image, conf=confidence)
