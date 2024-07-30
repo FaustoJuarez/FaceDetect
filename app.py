@@ -1,6 +1,7 @@
 import PIL
 import streamlit as st
 from ultralytics import YOLO
+import numpy as np
 import logging
 
 # Set up logging
@@ -11,7 +12,7 @@ model_path = 'weights/best.pt'
 
 # Setting page layout
 st.set_page_config(
-    page_title="Deteccion de Rostro",
+    page_title="Deteccion de Insectos",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -24,7 +25,7 @@ with st.sidebar:
     confidence = 0.15
 
 # Creating main page heading
-st.title("Deteccion de Rostro con YOLOv8")
+st.title("Deteccion de Insectos con YOLOv8")
 
 # Creating two columns on the main page
 col1, col2 = st.columns(2)
@@ -52,10 +53,19 @@ if source_img:
             st.error(ex)
             logging.error(f"Error opening image: {ex}")
     
-    if st.sidebar.button('Detectar Rostro'):
+    if st.sidebar.button('Detectar insectos'):
         try:
+            # Convert PIL Image to RGB mode
+            rgb_image = uploaded_image.convert('RGB')
+            
+            # Convert to numpy array
+            img_array = np.array(rgb_image)
+            
+            # Log the type and shape of the image
+            logging.info(f"Image type: {type(img_array)}, Shape: {img_array.shape}")
+            
             # Perform prediction
-            res = model(uploaded_image, conf=confidence)
+            res = model(img_array, conf=confidence)
             
             boxes = res[0].boxes
             res_plotted = res[0].plot()[:, :, ::-1]
