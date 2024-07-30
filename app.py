@@ -3,6 +3,7 @@ import streamlit as st
 from ultralytics import YOLO
 import numpy as np
 import logging
+import cv2
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -55,23 +56,25 @@ if source_img:
     
     if st.sidebar.button('Detectar insectos'):
         try:
-            # Convert PIL Image to RGB mode
-            rgb_image = uploaded_image.convert('RGB')
+            # Convert PIL Image to numpy array
+            img_array = np.array(uploaded_image)
             
-            # Convert to numpy array
-            img_array = np.array(rgb_image)
+            # Convert RGB to BGR (OpenCV uses BGR)
+            img_bgr = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
             
             # Log the type and shape of the image
-            logging.info(f"Image type: {type(img_array)}, Shape: {img_array.shape}")
+            logging.info(f"Image type: {type(img_bgr)}, Shape: {img_bgr.shape}")
             
             # Perform prediction
-            res = model(img_array, conf=confidence)
+            results = model(img_bgr, conf=confidence)
             
-            boxes = res[0].boxes
-            res_plotted = res[0].plot()[:, :, ::-1]
+            # Plot the results
+            for r in results:
+                im_array = r.plot()  # plot a BGR numpy array of predictions
+                im = PIL.Image.fromarray(im_array[..., ::-1])  # RGB PIL image
             
             with col2:
-                st.image(res_plotted,
+                st.image(im,
                          caption='Imagen detectada',
                          use_column_width=True
                          )
